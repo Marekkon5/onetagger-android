@@ -40,11 +40,11 @@ jobs:
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
       run: |
-        echo "$KEY_JKS" | base64 -d > android/android/key.jks
-        echo "storePassword=$STORE_PASSWORD" >> android/android/key.properties
-        echo "keyPassword=$KEY_PASSWORD" >> android/android/key.properties
-        echo "keyAlias=$KEY_ALIAS" >> android/android/key.properties
-        echo "storeFile=`pwd`/android/android/key.jks" >> android/android/key.properties
+        echo "$KEY_JKS" | base64 -d > android/key.jks
+        echo "storePassword=$STORE_PASSWORD" >> android/key.properties
+        echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+        echo "keyAlias=$KEY_ALIAS" >> android/key.properties
+        echo "storeFile=`pwd`/android/key.jks" >> android/key.properties
 
     - name: Install dependencies
       run: |
@@ -67,16 +67,16 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: onetagger-android-arm64
-        path: android/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+        path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 
     - name: Upload arm32
       uses: actions/upload-artifact@v3
       with:
         name: onetagger-android-arm32
-        path: android/build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+        path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
 
     - name: Upload x86_64
       uses: actions/upload-artifact@v3
       with:
         name: onetagger-android-x86_64
-        path: android/build/app/outputs/flutter-apk/app-x86_64-release.apk
+        path: build/app/outputs/flutter-apk/app-x86_64-release.apk
