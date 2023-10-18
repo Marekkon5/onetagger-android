@@ -48,6 +48,12 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt update
+        sudo apt install -y lld autogen libasound2-dev pkg-config make libssl-dev gcc g++ curl wget git libwebkit2gtk-4.1-dev
+
+
+    - name: Install tools
+      run: |
         rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
         cargo install flutter_rust_bridge_codegen
         cargo install cargo-ndk
