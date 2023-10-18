@@ -102,8 +102,8 @@ class _AutoTaggerPlatformsListState extends State<AutoTaggerPlatformsList> {
 
   void sort() {
     autoTaggerPlatforms.sort((a, b) {
-      var ai = autoTaggerConfig.platforms.indexOf(a.id);
-      var bi = autoTaggerConfig.platforms.indexOf(b.id);
+      var ai = autoTaggerConfig.platforms.indexOf(a.platform.id);
+      var bi = autoTaggerConfig.platforms.indexOf(b.platform.id);
       if (ai == -1 && bi == -1) return 0;
       if (ai == -1) return 1;
       if (bi == -1) return -1;
@@ -130,15 +130,15 @@ class _AutoTaggerPlatformsListState extends State<AutoTaggerPlatformsList> {
       },
 
       children: [
-        ...platforms.map((p) => AutoTaggerPlatformCard(p, autoTaggerConfig.platforms.contains(p.id), (bool enable) {
+        ...platforms.map((p) => AutoTaggerPlatformCard(p, autoTaggerConfig.platforms.contains(p.platform.id), (bool enable) {
           if (enable) {
-            autoTaggerConfig.platforms.add(p.id);
+            autoTaggerConfig.platforms.add(p.platform.id);
           } else {
-            autoTaggerConfig.platforms.remove(p.id);
+            autoTaggerConfig.platforms.remove(p.platform.id);
           }
           sort();
           setState(() {});
-        }, key: Key(p.id)))
+        }, key: Key(p.platform.id)))
       ],
     );
   }
@@ -265,7 +265,7 @@ class _AutoTaggerInputTagsState extends State<AutoTaggerInputTags> {
   /// Is the tag enabled
   bool isEnabled(SupportedTag tag) {
     for (var id in autoTaggerConfig.platforms) {
-      var platform = autoTaggerPlatforms.firstWhere((p) => p.id == id);
+      var platform = autoTaggerPlatforms.firstWhere((p) => p.platform.id == id);
       if (platform.supportedTags.contains(tag)) {
         return true;
       }
@@ -390,8 +390,8 @@ class _AutoTaggerPlatformSpecificScreenState extends State<AutoTaggerPlatformSpe
   /// Get the platforms
   List<AutoTaggerPlatform> platforms() {
     return autoTaggerConfig.platforms
-      .map((p) => autoTaggerPlatforms.firstWhere((pl) => pl.id == p))
-      .where((p) => p.id == 'spotify' || p.platform.customOptions.options.isNotEmpty)
+      .map((p) => autoTaggerPlatforms.firstWhere((pl) => pl.platform.id == p))
+      .where((p) => p.platform.id == 'spotify' || p.platform.customOptions.options.isNotEmpty)
       .toList(growable: false);
   }
 
@@ -418,7 +418,7 @@ class _AutoTaggerPlatformSpecificScreenState extends State<AutoTaggerPlatformSpe
               AutoTaggerPlatformSpecificWidget(platform),
 
               // Spotify override
-              if (platform.id == 'spotify')
+              if (platform.platform.id == 'spotify')
                 SpotifyConfigWidget(spotifyConfig: settings.spotifyConfig),
 
               Container(height: 16.0),
@@ -449,20 +449,20 @@ class _AutoTaggerPlatformSpecificWidgetState extends State<AutoTaggerPlatformSpe
       case PlatformCustomOptionValueType.boolean:
         return PlatformSpecificBooleanWidget(
             option.label,
-            autoTaggerConfig.custom[widget.platform.id]![option.id],
-            (v) => setState(() => autoTaggerConfig.custom[widget.platform.id]![option.id] = v)
+            autoTaggerConfig.custom[widget.platform.platform.id]![option.id],
+            (v) => setState(() => autoTaggerConfig.custom[widget.platform.platform.id]![option.id] = v)
         );
       case PlatformCustomOptionValueType.number:
         return PlatformSpecificNumberWidget(
           option.label, option.value.min!, option.value.max!, option.value.step!,
-          autoTaggerConfig.custom[widget.platform.id]![option.id],
-          (v) => setState(() => autoTaggerConfig.custom[widget.platform.id]![option.id] = v)
+          autoTaggerConfig.custom[widget.platform.platform.id]![option.id],
+          (v) => setState(() => autoTaggerConfig.custom[widget.platform.platform.id]![option.id] = v)
         );
       case PlatformCustomOptionValueType.string:
         return PlatformSpecificStringWidget(
           option.label,
-          autoTaggerConfig.custom[widget.platform.id]![option.id],
-          (v) => setState(() => autoTaggerConfig.custom[widget.platform.id]![option.id] = v)
+          autoTaggerConfig.custom[widget.platform.platform.id]![option.id],
+          (v) => setState(() => autoTaggerConfig.custom[widget.platform.platform.id]![option.id] = v)
         );
       case PlatformCustomOptionValueType.tag:
         // TODO: Implement tag custom option

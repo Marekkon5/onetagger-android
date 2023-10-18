@@ -3,10 +3,8 @@ use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
 use anyhow::Result;
 use log::{Metadata, Log, Level, Record, LevelFilter};
-use serde::Serialize;
 use crossbeam_channel::{unbounded, Sender, Receiver};
-
-use onetagger_autotag::{Tagger, TaggingStatusWrap, AudioFileInfoImpl, TaggerConfigExt, AutotaggerPlatforms};
+use onetagger_autotag::{Tagger, TaggingStatusWrap, AudioFileInfoImpl, TaggerConfigExt, AUTOTAGGER_PLATFORMS};
 use onetagger_platforms::spotify::Spotify;
 use onetagger_shared::{COMMIT, VERSION};
 use onetagger_tagger::{TaggerConfig, AudioFileInfo};
@@ -126,13 +124,11 @@ pub fn custom_default() -> String {
     serde_json::to_string(&TaggerConfig::custom_default().custom).unwrap()
 }
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct AutoTaggerPlatforms(&'static AutotaggerPlatforms);
-
 /// Get platforms list
 pub fn platforms() -> String {
-    serde_json::to_string(&AutoTaggerPlatforms(&onetagger_autotag::AUTOTAGGER_PLATFORMS)).unwrap()
+    let mut platforms = AUTOTAGGER_PLATFORMS.lock().unwrap();
+    platforms.load_all();
+    serde_json::to_string(&platforms.platforms.iter().map(|p| p.info.clone()).collect::<Vec<_>>()).unwrap()
 }
 
 /// Authorize spotify, None if authorized, otherwise string with auth url

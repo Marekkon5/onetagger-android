@@ -51,3 +51,5 @@ lib/*_generated.dart
 onetagger-android/src/*_generated*.rs
 lib/*.g.dart
 android/app/src/main/jniLibs/
+
+onetagger/

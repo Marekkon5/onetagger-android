@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["derive"] }
 
 onetagger-tagger = { git = "https://github.com/marekkon5/onetagger.git" }
 onetagger-shared = { git = "https://github.com/marekkon5/onetagger.git" }
-onetagger-autotag = { git = "https://github.com/marekkon5/onetagger.git" }
+onetagger-autotag = { git = "https://github.com/marekkon5/onetagger.git", default-features = false }
 onetagger-platforms = { git = "https://github.com/marekkon5/onetagger.git" }
 
 

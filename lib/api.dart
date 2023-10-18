@@ -52,10 +52,13 @@ class AutoTaggerConfig {
     required this.trackNumberLeadingZeroes,
     required this.writeLrc,
     required this.capitalizeGenres,
+    required this.fetchAllResults,
+    required this.removeAllCovers,
     this.titleRegex,
     this.moveFailedPath,
     this.moveSuccessPath,
     this.id3CommLang,
+
   });
 
   List<SupportedTag> tags;
@@ -97,6 +100,8 @@ class AutoTaggerConfig {
   SpotifyConfig? spotify;
   bool capitalizeGenres;
   String? id3CommLang;
+  bool removeAllCovers;
+  bool fetchAllResults;
 
 
   factory AutoTaggerConfig.defaultConfig() => AutoTaggerConfig(
@@ -137,6 +142,8 @@ class AutoTaggerConfig {
     multiplatform: false,
     custom: {},
     capitalizeGenres: false,
+    removeAllCovers: false,
+    fetchAllResults: false
   );
 
   /// Apply custom config
@@ -234,7 +241,6 @@ enum TaggingState {
 
 @JsonSerializable(explicitToJson: true)
 class AutoTaggerPlatform {
-  String id;
   bool builtIn;
   PlatformInfo platform;
   bool requiresAuth;
@@ -243,7 +249,7 @@ class AutoTaggerPlatform {
   @JsonKey(fromJson: AutoTaggerPlatform.decodeBase64Icon)
   Uint8List icon;
 
-  AutoTaggerPlatform(this.id, this.builtIn, this.icon, this.platform, this.requiresAuth, this.supportedTags);
+  AutoTaggerPlatform(this.builtIn, this.icon, this.platform, this.requiresAuth, this.supportedTags);
 
   /// Decode icon from base64
   static Uint8List decodeBase64Icon(String icon) {
