@@ -9,7 +9,7 @@ flutter pub run build_runner build
 
 echo 'Generating Flutter Rust bridge code...'
 # https://cjycode.com/flutter_rust_bridge/troubleshooting.html
-cargo build
+cd onetagger-android; cargo build || true; cd ..;
 export CPATH="$(clang -v 2>&1 | grep "Selected GCC installation" | rev | cut -d' ' -f1 | rev)/include"
 flutter_rust_bridge_codegen --rust-input onetagger-android/src/api.rs --dart-output lib/api_generated.dart
 unset CPATH
