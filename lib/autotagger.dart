@@ -232,6 +232,13 @@ class _AutoTaggerInputTagsState extends State<AutoTaggerInputTags> {
     if (!await Permission.storage.request().isGranted && !await Permission.manageExternalStorage.request().isGranted) {
       throw Exception("Storage permission not granted");
     }
+    // Get manage external storage permission
+    try {
+      await const MethodChannel('eu.marekkon5.onetagger/java').invokeMethod('requestStoragePermission');
+    } catch (e) {
+      // ignore
+    }
+
     // Get path from SAF
     var roots = await ExternalPath.getExternalStorageDirectories();
     var uri = await openDocumentTree(grantWritePermission: true);

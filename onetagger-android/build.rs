@@ -1,3 +1,5 @@
 fn main() {
-    println!("cargo:rustc-link-lib=c++_shared");
+    if std::env::var("TARGET").unwrap() != "x86_64-unknown-linux-gnu" {
+        println!("cargo:rustc-link-lib=c++_shared");
+    }
 }
