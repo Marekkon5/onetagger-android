@@ -8,8 +8,15 @@ echo 'Generating serialization code...'
 flutter pub run build_runner build
 
 echo 'Generating Flutter Rust bridge code...'
+
+# Build first locally because otherwise codegen throws error
+cd onetagger-android
+touch src/bridge_generated.rs
+cargo build
+rm src/bridge_generated.rs
+cd ..
+
 # https://cjycode.com/flutter_rust_bridge/troubleshooting.html
-cd onetagger-android; cargo build; cd ..;
 export CPATH="$(clang -v 2>&1 | grep "Selected GCC installation" | rev | cut -d' ' -f1 | rev)/include"
 flutter_rust_bridge_codegen --rust-input onetagger-android/src/api.rs --dart-output lib/api_generated.dart
 unset CPATH
